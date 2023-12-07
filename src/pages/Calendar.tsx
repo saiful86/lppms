@@ -1,6 +1,42 @@
 import Breadcrumb from '../components/Breadcrumb';
+import { EditOutlined, PlusCircleFilled, SmileFilled } from '@ant-design/icons';
+import { useState } from 'react';
+import { Modal, Button, Select, Input } from 'antd';
 
 const Calendar = () => {
+  //
+
+  // Modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  //Inside Modal Select
+
+  const onChange = (value: string) => {
+    console.log(`selected ${value}`);
+  };
+
+  const onSearch = (value: string) => {
+    console.log('search:', value);
+  };
+
+  // Filter `option.label` match the user type `input`
+  const filterOption = (
+    input: string,
+    option?: { label: string; value: string },
+  ) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
+
   return (
     <>
       <Breadcrumb pageName="Calendar" />
@@ -47,50 +83,166 @@ const Calendar = () => {
                 <div className="grid gap-4 grid-rows-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <span className="font-medium text-black dark:text-white">
+                      <p className="font-medium text-black dark:text-white">
                         1
-                      </span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        height="24px"
-                        viewBox="0 0 24 24"
-                        width="24px"
-                        fill="#fcca03"
-                      >
-                        <path d="M0 0h24v24H0z" fill="none" />
-                        <path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z" />
-                      </svg>
+                      </p>
+                      <SmileFilled
+                        className="ml-2"
+                        style={{ fontSize: '16px' }}
+                      />
                     </div>
-                    <span className="ml-2 cursor-pointer transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        height="24px"
-                        viewBox="0 0 24 24"
-                        width="24px"
-                        fill="#037ffc"
-                      >
-                        <path d="M0 0h24v24H0z" fill="none" />
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
-                      </svg>
-                    </span>
+
+                    <Modal
+                      title="Supplier"
+                      open={isModalOpen}
+                      onOk={handleOk}
+                      onCancel={handleCancel}
+                      footer={() => (
+                        <>
+                          <Button>Continue</Button>
+                        </>
+                      )}
+                    >
+                      <>
+                        <div style={{ marginBottom: '10px' }}>
+                          <div
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              marginBottom: '10px',
+                            }}
+                          >
+                            <p
+                              style={{
+                                padding: '5px',
+                                backgroundColor: 'gray',
+                                borderRadius: '5px',
+                                width: '50%',
+                                marginRight: '10px',
+                              }}
+                            >
+                              Select Supplier
+                            </p>
+                            <Select
+                              showSearch
+                              placeholder="Select Supplier"
+                              optionFilterProp="children"
+                              onChange={onChange}
+                              onSearch={onSearch}
+                              filterOption={filterOption}
+                              style={{ width: '100%' }}
+                              options={[
+                                {
+                                  value: 'GDL',
+                                  label: 'GDL',
+                                },
+                                {
+                                  value: 'DHL',
+                                  label: 'DHL',
+                                },
+                                {
+                                  value: 'Pathao',
+                                  label: 'Pathao',
+                                },
+                              ]}
+                            />
+                          </div>
+                          <div
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              marginBottom: '10px',
+                            }}
+                          >
+                            <p
+                              style={{
+                                padding: '5px',
+                                backgroundColor: 'gray',
+                                borderRadius: '5px',
+                                width: '50%',
+                                marginRight: '10px',
+                              }}
+                            >
+                              Select Material
+                            </p>
+                            <Select
+                              showSearch
+                              placeholder="Select Material"
+                              optionFilterProp="children"
+                              onChange={onChange}
+                              onSearch={onSearch}
+                              filterOption={filterOption}
+                              style={{ width: '100%' }}
+                              options={[
+                                {
+                                  value: 'Pure Lead 99.97%',
+                                  label: 'Pure Lead 99.97%',
+                                },
+                                {
+                                  value: 'Lead 80%',
+                                  label: 'Lead 80%',
+                                },
+                                {
+                                  value: 'Semi Lean 95%',
+                                  label: 'Semi Lean 95%',
+                                },
+                              ]}
+                            />
+                          </div>
+                          <div
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                            }}
+                          >
+                            <p
+                              style={{
+                                padding: '5px',
+                                backgroundColor: 'gray',
+                                borderRadius: '5px',
+                                width: '50%',
+                                marginRight: '10px',
+                              }}
+                            >
+                              Material
+                            </p>
+                            <Input
+                              style={{ width: '85%', marginRight: '5px' }}
+                              placeholder="Material"
+                            />
+                            <p
+                              style={{
+                                padding: '5px',
+                                backgroundColor: 'gray',
+                                borderRadius: '5px',
+                              }}
+                            >
+                              MT
+                            </p>
+                          </div>
+                        </div>
+                      </>
+                    </Modal>
+                    <PlusCircleFilled
+                      className="ml-2 cursor-pointer transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4"
+                      style={{ fontSize: '16px', color: 'blue' }}
+                      onClick={showModal}
+                    />
                   </div>
 
-                  <div className="event invisible left-1 z-99 mb-1 flex w-full flex-col rounded-sm border-l-[3px] border-primary bg-gray px-3 py-1 text-left opacity-0 dark:bg-meta-4 md:visible md:opacity-100">
+                  <div className="event invisible left-1 z-99 flex w-full flex-col rounded-sm border-l-[3px] border-primary bg-gray px-2 py-1 text-left opacity-0 dark:bg-meta-4 md:visible md:opacity-100">
                     <div className="flex items-center justify-between">
-                      <span className="event-name text-sm font-semibold text-black dark:text-white">
+                      <p className="event-name text-sm font-semibold text-black dark:text-white">
                         50 MT{' '}
-                      </span>
-                      <span className="ml-2 cursor-pointer transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          height="24"
-                          viewBox="0 -960 960 960"
-                          width="24"
-                          fill="#818583"
-                        >
-                          <path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z" />
-                        </svg>
-                      </span>
+                      </p>
+                      <EditOutlined
+                        className="ml-2 cursor-pointer transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4"
+                        style={{ fontSize: '16px' }}
+                        onClick={showModal}
+                      />
                     </div>
                   </div>
                 </div>
