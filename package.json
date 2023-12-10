@@ -16,6 +16,8 @@
   "dependencies": {
     "antd": "^5.12.1",
     "apexcharts": "^3.41.0",
+    "date-fns": "^2.30.0",
+    "dayjs": "^1.11.10",
     "headlessui": "^0.0.0",
     "jsvectormap": "^1.5.3",
     "match-sorter": "^6.3.1",
