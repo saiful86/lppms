@@ -9,6 +9,8 @@ import {
   PlusCircleOutlined,
 } from '@ant-design/icons';
 import { useState } from 'react';
+// import MyCalendar from '../components/Calendar';
+import '../MyCalendar.css';
 
 const CustomCalendar: React.FC = () => {
   const getListData = (value: Dayjs) => {
@@ -31,15 +33,15 @@ const CustomCalendar: React.FC = () => {
   // Modal
   const [isModalOpen, setModalOpen] = useState(false);
 
-    const handleOk = () => {
-      // Handle the OK action if needed
-      setModalOpen(false);
-    };
+  const handleOk = () => {
+    // Handle the OK action if needed
+    setModalOpen(false);
+  };
 
-    const handleCancel = () => {
-      // Handle the cancel action if needed
-      setModalOpen(false);
-    };
+  const handleCancel = () => {
+    // Handle the cancel action if needed
+    setModalOpen(false);
+  };
 
   //Inside Modal Select
 
@@ -140,8 +142,58 @@ const CustomCalendar: React.FC = () => {
     // Handle the form submission, e.g., send data to the server
   };
 
+  const handlePanelChange = (value: any, mode: 'year' | 'month' | 'decade') => {
+    // Handle panel change
+    console.log(value, mode);
+  };
+
   return (
     <div>
+      <div style={{ width: '50%' }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingBottom: '10px',
+          }}
+        >
+          <p
+            style={{
+              padding: '5px',
+              backgroundColor: 'gray',
+              borderRadius: '5px',
+              width: '50%',
+              marginRight: '10px',
+              color: 'white',
+            }}
+          >
+            Total Required Material
+          </p>
+          <Input
+            style={{ width: '85%', marginRight: '5px' }}
+            placeholder="Material"
+          />
+          <p
+            style={{
+              padding: '5px',
+              backgroundColor: 'gray',
+              borderRadius: '5px',
+              color: 'white',
+            }}
+          >
+            MT
+          </p>
+        </div>
+        <div
+          style={{
+            paddingBottom: '10px',
+          }}
+          className="flex justify-end"
+        >
+          <Button htmlType="submit">Continue</Button>
+        </div>
+      </div>
       <Calendar cellRender={cellRender} />
       <Modal
         title="Supplier"
@@ -348,6 +400,9 @@ const CustomCalendar: React.FC = () => {
           </Form>
         </>
       </Modal>
+      {/* <MyCalendar
+        onPanelChange={handlePanelChange}
+      /> */}
     </div>
   );
 };

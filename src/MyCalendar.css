@@ -1,0 +1,11 @@
+/* MyCalendar.css */
+/* Hide the mode-switching buttons */
+.ant-picker-calendar-mode-switch {
+  display: none !important;
+}
+
+:where(.css-dev-only-do-not-override-6j9yrn).ant-picker-calendar .ant-picker-calendar-header {
+    display: flex;
+    justify-content: flex-start;
+    padding: 12px 0;
+}
