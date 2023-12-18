@@ -142,10 +142,10 @@ const CustomCalendar: React.FC = () => {
     // Handle the form submission, e.g., send data to the server
   };
 
-  const handlePanelChange = (value: any, mode: 'year' | 'month' | 'decade') => {
-    // Handle panel change
-    console.log(value, mode);
-  };
+  // const handlePanelChange = (value: any, mode: 'year' | 'month' | 'decade') => {
+  //   // Handle panel change
+  //   console.log(value, mode);
+  // };
 
   return (
     <div>
@@ -164,8 +164,8 @@ const CustomCalendar: React.FC = () => {
               backgroundColor: 'gray',
               borderRadius: '5px',
               width: '50%',
-              marginRight: '10px',
               color: 'white',
+           
             }}
           >
             Total Required Material
