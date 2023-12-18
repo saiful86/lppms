@@ -149,52 +149,57 @@ const CustomCalendar: React.FC = () => {
 
   return (
     <div>
-      <div style={{ width: '50%' }}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            paddingBottom: '10px',
-          }}
-        >
-          <p
+      <div>
+        {/* start custom div */}
+        <div style={{ width: '50%' }}>
+          <div
             style={{
-              padding: '5px',
-              backgroundColor: 'gray',
-              borderRadius: '5px',
-              width: '50%',
-              color: 'white',
-           
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingBottom: '10px',
             }}
           >
-            Total Required Material
-          </p>
-          <Input
-            style={{ width: '85%', marginRight: '5px' }}
-            placeholder="Material"
-          />
-          <p
+            <p
+              style={{
+                padding: '5px',
+                backgroundColor: 'gray',
+                borderRadius: '5px',
+                width: '50%',
+                color: 'white',
+              }}
+            >
+              Total Required Material
+            </p>
+            <Input
+              style={{ width: '85%', marginRight: '5px' }}
+              placeholder="Material"
+            />
+            <p
+              style={{
+                padding: '5px',
+                backgroundColor: 'gray',
+                borderRadius: '5px',
+                color: 'white',
+              }}
+            >
+              MT
+            </p>
+          </div>
+          <div
             style={{
-              padding: '5px',
-              backgroundColor: 'gray',
-              borderRadius: '5px',
-              color: 'white',
+              paddingBottom: '10px',
             }}
+            className="flex justify-end"
           >
-            MT
-          </p>
+            <Button htmlType="submit">Continue</Button>
+          </div>
         </div>
-        <div
-          style={{
-            paddingBottom: '10px',
-          }}
-          className="flex justify-end"
-        >
-          <Button htmlType="submit">Continue</Button>
-        </div>
+
+        {/* Calendar component */}
+        <Calendar cellRender={cellRender} />
       </div>
-      <Calendar cellRender={cellRender} />
+
       <Modal
         title="Supplier"
         open={isModalOpen}
