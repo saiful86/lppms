@@ -2,11 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import Logo from '../images/logo/logo.png';
 import SidebarLinkGroup from './SidebarLinkGroup';
+import { sideBarMenus } from "../redux/api/navBarMenu";
 
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
 }
+
+const sideBarData = sideBarMenus;
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const location = useLocation();
@@ -204,6 +207,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     pathname.includes('calendar') &&
                     'bg-graydark dark:bg-meta-4'
                   }`}
+
+                  items={(sideBarData)}
                 >
                   <svg
                     className="fill-current"
