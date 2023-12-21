@@ -1,7 +1,7 @@
 "use client";
 
 import Contents from "../../components/ui/Contents";
-// import SideBar from "../../components/Sidebar";
+import SideBar from "../../components/ui/SideBar";
 import { Layout, Row, Space, Spin } from "antd";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -41,7 +41,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Layout hasSider>
-      {/* <SideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> */}
+      <SideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       <Contents sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}>
         {children}
       </Contents>

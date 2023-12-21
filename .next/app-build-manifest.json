@@ -21,6 +21,11 @@
       "static/chunks/main-app.js",
       "static/chunks/app/not-found.js"
     ],
+    "/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/page.js"
+    ],
     "/(withlayout)/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
