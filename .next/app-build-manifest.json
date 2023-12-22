@@ -21,20 +21,25 @@
       "static/chunks/main-app.js",
       "static/chunks/app/not-found.js"
     ],
-    "/page": [
+    "/(withlayout)/super_admin/calendar/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
+      "static/chunks/app/(withlayout)/super_admin/calendar/page.js"
     ],
     "/(withlayout)/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(withlayout)/layout.js"
     ],
-    "/(withlayout)/super_admin/calendar/page": [
+    "/(withlayout)/super_admin/dashboard/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(withlayout)/super_admin/calendar/page.js"
+      "static/chunks/app/(withlayout)/super_admin/dashboard/page.js"
+    ],
+    "/(withlayout)/super_admin/profile/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(withlayout)/super_admin/profile/page.js"
     ]
   }
 }

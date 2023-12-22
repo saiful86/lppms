@@ -1,27 +1,14 @@
 'use client';
 
-import React from 'react';
-import type { Dayjs } from 'dayjs';
-import type { BadgeProps } from 'antd';
-import { Badge, Calendar, Button, Select, Input, Modal, Form } from 'antd';
-import {
-  EditOutlined,
-  SaveOutlined,
-  BookFilled,
-  PlusCircleOutlined,
-} from '@ant-design/icons';
-import { useState } from 'react';
-// import MyCalendar from '../components/Calendar';
-// import '../MyCalendar.css';
 import { useGetAllPlansQuery } from '../../../../redux/api/plans/plansApi';
-
-const CustomCalendar: React.FC = () => {
-  // Modal
-  const [isModalOpen, setModalOpen] = useState(false);
+// import Breadcrumb from '../../../../components/Breadcrumb';
+const Calendar = () => {
   const { data: plans, isLoading, isError } = useGetAllPlansQuery({});
 
   console.log(plans, 'Data Plans');
 
+
+  
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -30,402 +17,262 @@ const CustomCalendar: React.FC = () => {
     return <div>Error fetching plans</div>;
   }
 
-  const getListData = (value: Dayjs) => {
-    let listData;
-    switch (value.date()) {
-      case 8:
-        listData = [{ type: 'success', content: '50 MT' }];
-        break;
-      case 10:
-        listData = [{ type: 'success', content: '500 MT' }];
-        break;
-      case 15:
-        listData = [{ type: 'success', content: '500 MT' }];
-        break;
-      default:
-    }
-    return listData || [];
-  };
-
-
-
-  const handleOk = () => {
-    // Handle the OK action if needed
-    setModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    // Handle the cancel action if needed
-    setModalOpen(false);
-  };
-
-  //Inside Modal Select
-
-  const onChange = (value: string) => {
-    console.log(`selected ${value}`);
-  };
-
-  const onSearch = (value: string) => {
-    console.log('search:', value);
-  };
-
-  const cellRender = (value: Dayjs) => {
-    const listData = getListData(value);
-
-    const showModal = () => {
-      // Open the modal when the plus button is clicked
-      setModalOpen(true);
-    };
-
-    const [isEditing, setEditing] = React.useState(false);
-    const [editedContent, setEditedContent] = React.useState('');
-
-    const handleEdit = () => {
-      setEditing(!isEditing);
-    };
-
-    const handleSave = () => {
-      if (editedContent.trim() !== '') {
-        console.log('Updated data:', {
-          type: 'success',
-          content: editedContent,
-        });
-        setEditing(false);
-        // Update the content in your data source or dispatch an action to update the data
-      } else {
-        // If content is empty, cancel editing mode
-        setEditing(false);
-      }
-    };
-
-    return (
-      <div className="date-cell-wrapper">
-        <div className="events">
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <div>
-              <BookFilled style={{ color: 'red' }} />
-              <BookFilled style={{ color: 'green' }} />
-              <BookFilled style={{ color: 'yellow' }} />
-              <BookFilled style={{ color: 'black' }} />
-            </div>
-
-            <PlusCircleOutlined onClick={showModal} />
-          </div>
-          {listData.map((item, index) => (
-            <>
-              <div style={{ paddingTop: '20px' }}>
-                <div
-                  className="event invisible left-1 z-99 flex w-full flex-row justify-between rounded-sm border-l-[3px] border-primary bg-gray px-2 py-1 text-left opacity-0 dark:bg-meta-4 md:visible md:opacity-100"
-                  key={index}
-                >
-                  {isEditing ? (
-                    <div className="events flex flex-row justify-between text-left opacity-0 dark:bg-meta-4 md:visible md:opacity-100">
-                      <input
-                        style={{ width: '100%' }}
-                        type="text"
-                        placeholder="Edit"
-                        value={editedContent}
-                        onChange={(e) => setEditedContent(e.target.value)}
-                      />
-                      <SaveOutlined onClick={handleSave} />
-                    </div>
-                  ) : (
-                    <React.Fragment>
-                      <Badge
-                        status={item.type as BadgeProps['status']}
-                        text={item.content}
-                      />
-                      <EditOutlined onClick={handleEdit} />
-                    </React.Fragment>
-                  )}
-                </div>
-              </div>
-            </>
-          ))}
-        </div>
+  const renderPlansForDay = (day) => {
+    const dayPlans = plans.filter((plan) => {
+      const planDay = new Date(plan.date).getDate();
+      return planDay === day;
+    });
+  
+    return dayPlans.map((plan) => (
+      <div key={plan.id} className="event">
+        <span className="event-name">{`${plan.supplier} - ${plan.material}`}</span>
+        <span className="time">{formatDate(plan.date)}</span>
+        {/* Add additional plan details as needed */}
       </div>
-    );
+    ));
+  };
+  
+  const formatDate = (dateString) => {
+    const options = { month: 'short', day: 'numeric' };
+    const date = new Date(dateString);
+    return date.toLocaleDateString(undefined, options);
   };
 
-  // Filter `option.label` match the user type `input`
-  const filterOption = (
-    input: string,
-    option?: { label: string; value: string },
-  ) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
+  const renderCalendar = () => {
+    // Replace this part with the logic to generate the calendar based on your requirements
+    const daysInMonth = Array.from({ length: 31 }, (_, index) => index + 1);
 
-  const onFinish = (values: any) => {
-    console.log('Form submission data:', values);
-    // Handle the form submission, e.g., send data to the server
+    return daysInMonth.map((day) => (
+      <td
+        key={day}
+        className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31"
+      >
+        <span className="font-medium text-black dark:text-white">{day}</span>
+        <div className="group invisible absolute left-2 z-99 mb-1 flex w-[300%] flex-col rounded-sm border-l-[3px] border-primary bg-gray px-3 py-1 text-left opacity-0">
+          {renderPlansForDay(day)}
+        </div>
+      </td>
+    ));
   };
-
-  // const handlePanelChange = (value: any, mode: 'year' | 'month' | 'decade') => {
-  //   // Handle panel change
-  //   console.log(value, mode);
-  // };
 
   return (
-    <div>
-      <div>
-        {/* start custom div */}
-        <div style={{ width: '50%' }}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              paddingBottom: '10px',
-            }}
-          >
-            <p
-              style={{
-                padding: '5px',
-                backgroundColor: 'gray',
-                borderRadius: '5px',
-                width: '50%',
-                color: 'white',
-              }}
-            >
-              Total Required Material
-            </p>
-            <Input
-              style={{ width: '85%', marginRight: '5px' }}
-              placeholder="Material"
-            />
-            <p
-              style={{
-                padding: '5px',
-                backgroundColor: 'gray',
-                borderRadius: '5px',
-                color: 'white',
-              }}
-            >
-              MT
-            </p>
-          </div>
-          <div
-            style={{
-              paddingBottom: '10px',
-            }}
-            className="flex justify-end"
-          >
-            <Button htmlType="submit">Continue</Button>
-          </div>
-        </div>
-
-        {/* Calendar component */}
-        <Calendar cellRender={cellRender} />
+    <>
+      {/* <Breadcrumb pageName="Calendar" /> */}
+      <h1 className="text-title-md2 font-semibold text-black dark:text-white">Calendar</h1>
+      {/* <!-- ====== Calendar Section Start ====== --> */}
+      <div className="w-full max-w-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+        <table className="w-full">
+          <thead>
+            <tr className="grid grid-cols-7 rounded-t-sm bg-primary text-white">
+              <th className="flex h-15 items-center justify-center rounded-tl-sm p-1 text-xs font-semibold sm:text-base xl:p-5">
+                <span className="hidden lg:block"> Sunday </span>
+                <span className="block lg:hidden"> Sun </span>
+              </th>
+              <th className="flex h-15 items-center justify-center p-1 text-xs font-semibold sm:text-base xl:p-5">
+                <span className="hidden lg:block"> Monday </span>
+                <span className="block lg:hidden"> Mon </span>
+              </th>
+              <th className="flex h-15 items-center justify-center p-1 text-xs font-semibold sm:text-base xl:p-5">
+                <span className="hidden lg:block"> Tuesday </span>
+                <span className="block lg:hidden"> Tue </span>
+              </th>
+              <th className="flex h-15 items-center justify-center p-1 text-xs font-semibold sm:text-base xl:p-5">
+                <span className="hidden lg:block"> Wednesday </span>
+                <span className="block lg:hidden"> Wed </span>
+              </th>
+              <th className="flex h-15 items-center justify-center p-1 text-xs font-semibold sm:text-base xl:p-5">
+                <span className="hidden lg:block"> Thursday </span>
+                <span className="block lg:hidden"> Thur </span>
+              </th>
+              <th className="flex h-15 items-center justify-center p-1 text-xs font-semibold sm:text-base xl:p-5">
+                <span className="hidden lg:block"> Friday </span>
+                <span className="block lg:hidden"> Fri </span>
+              </th>
+              <th className="flex h-15 items-center justify-center rounded-tr-sm p-1 text-xs font-semibold sm:text-base xl:p-5">
+                <span className="hidden lg:block"> Saturday </span>
+                <span className="block lg:hidden"> Sat </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {/* <!-- Line 1 --> */}
+            <tr className="grid grid-cols-7">{renderCalendar()}</tr>
+            {/* <!-- Line 1 --> */}
+            {/* <!-- Line 2 --> */}
+            {/* <tr className="grid grid-cols-7">
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  8
+                </span>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  9
+                </span>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  10
+                </span>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  11
+                </span>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  12
+                </span>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  13
+                </span>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  14
+                </span>
+              </td>
+            </tr> */}
+            {/* <!-- Line 2 --> */}
+            {/* <!-- Line 3 --> */}
+            {/* <tr className="grid grid-cols-7">
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  15
+                </span>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  16
+                </span>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  17
+                </span>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  18
+                </span>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  19
+                </span>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  20
+                </span>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  21
+                </span>
+              </td>
+            </tr> */}
+            {/* <!-- Line 3 --> */}
+            {/* <!-- Line 4 --> */}
+            {/* <tr className="grid grid-cols-7">
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  22
+                </span>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  23
+                </span>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  24
+                </span>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  25
+                </span>
+                <div className="group h-16 w-full flex-grow cursor-pointer py-1 md:h-30">
+                  <span className="group-hover:text-primary md:hidden">
+                    More
+                  </span>
+                  <div className="event invisible absolute left-2 z-99 mb-1 flex w-[300%] flex-col rounded-sm border-l-[3px] border-primary bg-gray px-3 py-1 text-left opacity-0 group-hover:visible group-hover:opacity-100 dark:bg-meta-4 md:visible md:w-[290%] md:opacity-100">
+                    <span className="event-name text-sm font-semibold text-black dark:text-white">
+                      App Design
+                    </span>
+                    <span className="time text-sm font-medium text-black dark:text-white">
+                      25 Dec - 27 Dec
+                    </span>
+                  </div>
+                </div>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  26
+                </span>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  27
+                </span>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  28
+                </span>
+              </td>
+            </tr> */}
+            {/* <!-- Line 4 --> */}
+            {/* <!-- Line 5 --> */}
+            {/* <tr className="grid grid-cols-7">
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  29
+                </span>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  30
+                </span>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  31
+                </span>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  1
+                </span>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  2
+                </span>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  3
+                </span>
+              </td>
+              <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <span className="font-medium text-black dark:text-white">
+                  4
+                </span>
+              </td>
+            </tr> */}
+            {/* <!-- Line 5 --> */}
+          </tbody>
+        </table>
       </div>
-
-      <Modal
-        title="Supplier"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        footer={null}
-      >
-        <>
-          <Form onFinish={onFinish}>
-            <div style={{ marginBottom: '10px' }}>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  marginBottom: '10px',
-                }}
-              >
-                <p
-                  style={{
-                    padding: '5px',
-                    backgroundColor: 'gray',
-                    borderRadius: '5px',
-                    width: '50%',
-                    marginRight: '10px',
-                    color: 'white',
-                  }}
-                >
-                  Select Supplier
-                </p>
-                <Select
-                  showSearch
-                  placeholder="Select Supplier"
-                  optionFilterProp="children"
-                  onChange={onChange}
-                  onSearch={onSearch}
-                  filterOption={filterOption}
-                  style={{ width: '100%' }}
-                  options={[
-                    {
-                      value: 'GDL',
-                      label: 'GDL',
-                    },
-                    {
-                      value: 'DHL',
-                      label: 'DHL',
-                    },
-                    {
-                      value: 'Pathao',
-                      label: 'Pathao',
-                    },
-                  ]}
-                />
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  marginBottom: '10px',
-                }}
-              >
-                <p
-                  style={{
-                    padding: '5px',
-                    backgroundColor: 'gray',
-                    borderRadius: '5px',
-                    width: '50%',
-                    marginRight: '10px',
-                    color: 'white',
-                  }}
-                >
-                  Select Material
-                </p>
-                <Select
-                  showSearch
-                  placeholder="Select Material"
-                  optionFilterProp="children"
-                  onChange={onChange}
-                  onSearch={onSearch}
-                  filterOption={filterOption}
-                  style={{ width: '100%' }}
-                  options={[
-                    {
-                      value: 'Pure Lead 99.97%',
-                      label: 'Pure Lead 99.97%',
-                    },
-                    {
-                      value: 'Lead 80%',
-                      label: 'Lead 80%',
-                    },
-                    {
-                      value: 'Semi Lean 95%',
-                      label: 'Semi Lean 95%',
-                    },
-                  ]}
-                />
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  marginBottom: '10px',
-                }}
-              >
-                <p
-                  style={{
-                    padding: '5px',
-                    backgroundColor: 'gray',
-                    borderRadius: '5px',
-                    width: '50%',
-                    marginRight: '10px',
-                    color: 'white',
-                  }}
-                >
-                  Input Rate
-                </p>
-                <Input style={{ width: '100%' }} placeholder="Input Rate" />
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  marginBottom: '10px',
-                }}
-              >
-                <p
-                  style={{
-                    padding: '5px',
-                    backgroundColor: 'gray',
-                    borderRadius: '5px',
-                    width: '50%',
-                    marginRight: '10px',
-                    color: 'white',
-                  }}
-                >
-                  VAT
-                </p>
-                <Input style={{ width: '100%' }} placeholder="VAT" />
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  marginBottom: '10px',
-                }}
-              >
-                <p
-                  style={{
-                    padding: '5px',
-                    backgroundColor: 'gray',
-                    borderRadius: '5px',
-                    width: '50%',
-                    marginRight: '10px',
-                    color: 'white',
-                  }}
-                >
-                  AIT
-                </p>
-                <Input style={{ width: '100%' }} placeholder="AIT" />
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <p
-                  style={{
-                    padding: '5px',
-                    backgroundColor: 'gray',
-                    borderRadius: '5px',
-                    width: '50%',
-                    marginRight: '10px',
-                    color: 'white',
-                  }}
-                >
-                  Material
-                </p>
-                <Input
-                  style={{ width: '85%', marginRight: '5px' }}
-                  placeholder="Material"
-                />
-                <p
-                  style={{
-                    padding: '5px',
-                    backgroundColor: 'gray',
-                    borderRadius: '5px',
-                    color: 'white',
-                  }}
-                >
-                  MT
-                </p>
-              </div>
-            </div>
-            <div className="flex justify-end">
-              <Button htmlType="submit">Continue</Button>
-            </div>
-          </Form>
-        </>
-      </Modal>
-      {/* <MyCalendar
-        onPanelChange={handlePanelChange}
-      /> */}
-    </div>
+      {/* <!-- ====== Calendar Section End ====== --> */}
+    </>
   );
 };
 
-export default CustomCalendar;
+export default Calendar;

@@ -31,7 +31,7 @@ const SideBar = (props: {
   
   return (
     <Sider
-    className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0`}
+     className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0`}
       collapsed={props.sidebarOpen}
       onCollapse={(value) => props.setSidebarOpen(value)}
       width={270}
@@ -69,9 +69,10 @@ const SideBar = (props: {
       </div>
       <Menu
         style={{
-          backgroundColor: "#bebe",
+          backgroundColor: "#001529",
           marginTop: "10px",
-          color:"white"
+          color:"red",
+        
         }}
         defaultSelectedKeys={["1"]}
         mode="inline"
