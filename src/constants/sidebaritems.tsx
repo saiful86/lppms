@@ -21,12 +21,14 @@ export const sideBarItems = (role: string, sideBarData: any) => {
       const label = item.routeUrl ? (
         <Link href={`/${role}/${item.routeUrl}`}>
           <span style={labelStyle}>
-            {item.icon && React.createElement(item.icon)} {item.menuName}
+            {/* {item.icon && React.createElement(item.icon)}  */}
+            {item.menuName}
           </span>
         </Link>
       ) : (
         <span style={labelStyle}>
-          {item.icon && React.createElement(item.icon)} {item.menuName}
+          {/* {item.icon && React.createElement(item.icon)}  */}
+          {item.menuName}
         </span>
       );
 

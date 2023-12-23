@@ -19,16 +19,14 @@ export const transTypeApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.plans],
     }),
-    // transAllsourceType
-    transsourctype: build.query({
-      query: (arg: Record<string, any>) => {
-        return {
-          url: "/setting/api/v1/tran-source-type/drop-down",
-          method: "GET",
-          params: arg,
-        };
-      },
-      providesTags: [tagTypes.plans],
+    // create a new vat rebate type
+    addMaterialData: build.mutation({
+      query: (data) => ({
+        url: "/api/test/addPlan",
+        method: "POST",
+        data,
+      }),
+      invalidatesTags: [tagTypes.plans],
     }),
 
     // get single transaction
@@ -62,7 +60,7 @@ export const transTypeApi = baseApi.injectEndpoints({
 
 export const {
   useGetAllPlansQuery,
-  useTranssourctypeQuery,
+  useAddMaterialDataMutation,
   useGetSingleTransactionQuery,
   useAddTransactionMutation,
   useUpdateTransactionMutation,
