@@ -1,3 +1,6 @@
 {
-  "/(withlayout)/super_admin/calendar/page": "app/(withlayout)/super_admin/calendar/page.js"
+  "/page": "app/page.js",
+  "/(withlayout)/super_admin/calendar/page": "app/(withlayout)/super_admin/calendar/page.js",
+  "/(withlayout)/super_admin/dashboard/page": "app/(withlayout)/super_admin/dashboard/page.js",
+  "/(withlayout)/super_admin/profile/page": "app/(withlayout)/super_admin/profile/page.js"
 }

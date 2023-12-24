@@ -57,8 +57,25 @@ pagination-area {
   margin-right: 0;
 }
 
+.ant-btn-primary {
+  background-color: #1890ff; /* Your desired background color for the primary button */
+  color: #fff; /* Your desired text color for the primary button */
+}
+
 .ant-picker-calendar-header {
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-start; /* Adjusted from flex-start to flex-end */
   padding: 12px 0;
 }
+
+/* Optionally, you can adjust the styles for the year and date labels */
+.ant-picker-calendar-year-panel-selected-cell {
+  color: #1890ff; /* Adjust the color as needed */
+  font-weight: bold;
+}
+
+.ant-picker-calendar-date-panel-selected-day {
+  color: #1890ff; /* Adjust the color as needed */
+  font-weight: bold;
+}
+

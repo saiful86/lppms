@@ -6,6 +6,7 @@ import { Layout, Menu } from "antd";
 // import DarazLogo from "../../assets/daraz-logo.png";
 import { useManuPropsQuery } from "../../redux/api/navApi";
 import { sideBarMenus } from "../../redux/api/navBarMenu";
+import { useRouter } from "next/navigation";
 const { Sider } = Layout;
 
 // const customStyles = {
@@ -19,15 +20,13 @@ const SideBar = (props: {
   sidebarOpen: boolean;
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
-  // const { role } = getUserInfo() as any;
-  // console.log(role);
+  const router = useRouter();
   const role = "super_admin";
-
   const { data } = useManuPropsQuery({});
 
 
   const sideBarData = sideBarMenus;
-  // const sideBarData = data?.result;
+  const currentRoute = router.pathname; // Get the current route
   
   return (
     <Sider
@@ -71,13 +70,28 @@ const SideBar = (props: {
         style={{
           backgroundColor: "#001529",
           marginTop: "10px",
-          color:"red",
-        
+          color: "red",
         }}
         defaultSelectedKeys={["1"]}
         mode="inline"
-        items={sideBarItems(role,sideBarData)}
-      />
+        items={sideBarItems(role, sideBarData)}
+        theme="dark"
+      >
+        {/* {sideBarItems(role, sideBarData).map((item) => (
+          <Menu.Item
+            key={item.key}
+            icon={item.icon}
+            onClick={() => handleMenuClick(item.key)}
+            style={{
+              color: "white",
+              backgroundColor:
+                currentRoute === item.route ? "#1890ff" : undefined, // Set background color for the selected route
+            }}
+          >
+            {item.label}
+          </Menu.Item>
+        ))} */}
+      </Menu>
     </Sider>
   );
 };
