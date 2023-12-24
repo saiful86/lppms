@@ -1,14 +1,14 @@
 import { lazy } from 'react';
 
-const Calendar = lazy(() => import('../pages/Calendar'));
-const Chart = lazy(() => import('../pages/Chart'));
-const FormElements = lazy(() => import('../pages/Form/FormElements'));
-const FormLayout = lazy(() => import('../pages/Form/FormLayout'));
-const Profile = lazy(() => import('../pages/Profile'));
-const Settings = lazy(() => import('../pages/Settings'));
-const Tables = lazy(() => import('../pages/Tables'));
-const Alerts = lazy(() => import('../pages/UiElements/Alerts'));
-const Buttons = lazy(() => import('../pages/UiElements/Buttons'));
+const Calendar = lazy(() => import('../components/Calendar'));
+const Chart = lazy(() => import('../components/Chart'));
+const FormElements = lazy(() => import('../components/Form/FormElements'));
+const FormLayout = lazy(() => import('../components/Form/FormLayout'));
+const Profile = lazy(() => import('../components/Profile'));
+const Settings = lazy(() => import('../components/Settings'));
+const Tables = lazy(() => import('../components/Tables'));
+const Alerts = lazy(() => import('../components/UiElements/Alerts'));
+const Buttons = lazy(() => import('../components/UiElements/Buttons'));
 
 const coreRoutes = [
   {
